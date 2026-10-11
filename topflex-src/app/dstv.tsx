@@ -81,9 +81,9 @@ export default function DstvScreen() {
             <View style={styles.quickList}>
               {([['refresh-outline', 'Renew Subscription', 'Verify your smartcard to renew.', () => setStep('verify')], ['albums-outline', 'View Packages', 'Compare channels and monthly prices.', () => setStep('packages')], ['help-buoy-outline', 'Get Help', 'Talk to the TopFlex support team.', () => router.push('/services/support')]] as const).map(([icon, label, sub, fn]) => (
                 <Pressable key={label} accessibilityRole="button" onPress={fn} style={({ pressed }) => [styles.quickRow, pressed && styles.quickRowPressed]}>
-                  <View style={styles.quickIcon}><Ionicons name={icon} size={22} color={B.blue} /></View>
+                  <View style={styles.quickIcon}><Ionicons name={icon} size={22} color={B.white} /></View>
                   <View style={{ flex: 1 }}><Text style={styles.quickTitle}>{label}</Text><Text style={styles.quickSub}>{sub}</Text></View>
-                  <Ionicons name="chevron-forward" size={19} color={B.muted} />
+                  <Ionicons name="chevron-forward" size={19} color={B.white} />
                 </Pressable>
               ))}
             </View>
@@ -198,11 +198,11 @@ const styles = StyleSheet.create({
   manageTitle: { color: B.white, fontFamily: 'Inter_700Bold', fontSize: 16 },
   manageText: { color: '#d6e4ff', fontFamily: 'Inter_400Regular', fontSize: 12, marginTop: 3 },
   quickList: { gap: 10 },
-  quickRow: { flexDirection: 'row', alignItems: 'center', gap: 14, backgroundColor: B.white, borderRadius: 18, padding: 16, borderWidth: 1, borderColor: B.border },
-  quickRowPressed: { backgroundColor: B.light },
-  quickIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: B.light, alignItems: 'center', justifyContent: 'center' },
-  quickTitle: { fontFamily: 'Inter_600SemiBold', fontSize: 14, color: B.text },
-  quickSub: { fontFamily: 'Inter_400Regular', fontSize: 12, color: B.muted, marginTop: 3 },
+  quickRow: { flexDirection: 'row', alignItems: 'center', gap: 14, backgroundColor: B.blue, borderRadius: 18, padding: 16, shadowColor: B.blue, shadowOpacity: 0.22, shadowRadius: 12, shadowOffset: { width: 0, height: 6 } },
+  quickRowPressed: { backgroundColor: B.deep },
+  quickIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.16)', alignItems: 'center', justifyContent: 'center' },
+  quickTitle: { fontFamily: 'Inter_700Bold', fontSize: 15, color: B.white },
+  quickSub: { fontFamily: 'Inter_400Regular', fontSize: 12, color: '#d6e4ff', marginTop: 3 },
   card: { backgroundColor: B.white, borderRadius: 18, padding: 18, borderWidth: 1, borderColor: B.border, gap: 10 },
   cardTitle: { fontFamily: 'Inter_700Bold', fontSize: 16, color: B.text },
   benefit: { flexDirection: 'row', gap: 10, alignItems: 'center' },
