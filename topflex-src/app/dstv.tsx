@@ -83,12 +83,6 @@ export default function DstvScreen() {
                 <Pressable key={label} onPress={fn} style={styles.quickItem}><View style={styles.quickIcon}><Ionicons name={icon} size={22} color={B.blue} /></View><Text style={styles.quickText}>{label}</Text></Pressable>
               ))}
             </View>
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>Why DStv?</Text>
-              {[['football-outline', 'Live sports on SuperSport'], ['film-outline', 'Blockbuster movies and series'], ['sparkles-outline', 'Local and international entertainment'], ['happy-outline', 'Kids and family channels']].map(([i, t]) => (
-                <View key={t} style={styles.benefit}><Ionicons name={i as any} size={17} color={B.blue} /><Text style={styles.benefitText}>{t}</Text></View>
-              ))}
-            </View>
           </>
         )}
 
