@@ -31,6 +31,10 @@ export const RESTAURANT_REVIEWS: readonly RestaurantReview[] = [
 export function getRestaurantReviews(restaurantId: string) {
   return RESTAURANT_REVIEWS.filter((review) => review.restaurantId === restaurantId);
 }
+export function getFoodItemReviews(restaurantId: string, foodItem: string) {
+  const name = foodItem.trim().toLowerCase();
+  return RESTAURANT_REVIEWS.filter((review) => review.restaurantId === restaurantId && review.foodItem?.trim().toLowerCase() === name);
+}
 export function reviewSummary(reviews: readonly RestaurantReview[]) {
   const counts = [5, 4, 3, 2, 1].map((rating) => ({ rating, count: reviews.filter((review) => review.rating === rating).length }));
   return { total: reviews.length, average: reviews.length ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length : null, counts };

@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { Pager, c, s } from './FoodUI';
-import { getRestaurantReviews, type RestaurantReview } from '@/lib/restaurant-reviews';
+import { getFoodItemReviews, getRestaurantReviews, type RestaurantReview } from '@/lib/restaurant-reviews';
 
 export function ReviewStars({ rating }: { rating: number }) {
   return <View style={rs.stars} accessibilityLabel={`${rating.toFixed(1)} out of 5 stars`}>
@@ -37,6 +37,18 @@ export function RestaurantReviewsPreview({ restaurantId }: { restaurantId: strin
       <Pressable accessibilityRole="link" accessibilityLabel="See all restaurant ratings and reviews" hitSlop={8} onPress={() => router.push({ pathname: '/food-reviews', params: { id: restaurantId } })}><Text style={rs.link}>See All</Text></Pressable>
     </View>
     {reviews.length ? <Pager data={reviews} perPage={2} label="Customer review rows" render={(review) => <ReviewCard key={review.id} review={review} preview />} /> : <ReviewsEmpty />}
+  </View>;
+}
+
+export function FoodItemReviewsPreview({ restaurantId, itemName }: { restaurantId: string; itemName: string }) {
+  const router = useRouter();
+  const reviews = getFoodItemReviews(restaurantId, itemName).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 6);
+  return <View style={rs.section}>
+    <View style={rs.heading}>
+      <Text style={[s.section, rs.headingText]}>Ratings & Reviews</Text>
+      <Pressable accessibilityRole="link" accessibilityLabel="See all ratings and reviews for this item" hitSlop={8} onPress={() => router.push({ pathname: '/food-reviews', params: { id: restaurantId, item: itemName } })}><Text style={rs.link}>See All</Text></Pressable>
+    </View>
+    {reviews.length ? <Pager data={reviews} perPage={2} label="Food item review rows" render={(review) => <ReviewCard key={review.id} review={review} preview />} /> : <ReviewsEmpty />}
   </View>;
 }
 

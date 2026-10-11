@@ -3,6 +3,7 @@ import { Image, Platform, Pressable, ScrollView, Text, TextInput, View } from 'r
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Btn, FoodHeader, c, notify, s } from '@/components/food/FoodUI';
+import { FoodItemReviewsPreview } from '@/components/food/RestaurantReviews';
 import { FOOD_IMAGES, addToCart, formatGHS, getMenuItem, getRestaurant, unitPrice } from '@/lib/food-store';
 
 export default function FoodItemScreen() {
@@ -71,6 +72,7 @@ export default function FoodItemScreen() {
           </View>
           <View style={{ flex: 1 }}><Btn label={`Add to Cart · ${formatGHS(unit * qty)}`} onPress={submit} disabled={!ok} /></View>
         </View>
+        <FoodItemReviewsPreview restaurantId={item.restaurantId} itemName={item.name} />
       </View>
     </ScrollView>
   );
