@@ -81,9 +81,9 @@ export default function DstvScreen() {
             <View style={styles.quickList}>
               {([['refresh-outline', 'Renew Subscription', 'Verify your smartcard to renew.', () => setStep('verify')], ['albums-outline', 'View Packages', 'Compare channels and monthly prices.', () => setStep('packages')], ['help-buoy-outline', 'Get Help', 'Talk to the TopFlex support team.', () => router.push('/services/support')]] as const).map(([icon, label, sub, fn]) => (
                 <Pressable key={label} accessibilityRole="button" onPress={fn} style={({ pressed }) => [styles.quickRow, pressed && styles.quickRowPressed]}>
-                  <View style={styles.quickIcon}><Ionicons name={icon} size={22} color={B.blue} /></View>
+                  <View style={styles.quickIcon}><Ionicons name={icon} size={22} color={B.white} /></View>
                   <View style={{ flex: 1 }}><Text style={styles.quickTitle}>{label}</Text><Text style={styles.quickSub}>{sub}</Text></View>
-                  <Ionicons name="chevron-forward" size={19} color={B.muted} />
+                  <Ionicons name="chevron-forward" size={19} color={B.white} />
                 </Pressable>
               ))}
             </View>
