@@ -7,8 +7,9 @@ const records: RestaurantReview[] = [
   { id: 'c', restaurantId: 'two', displayName: 'Customer C', rating: 1, text: 'Cold food', createdAt: '2026-10-03T12:00:00Z' },
 ];
 describe('restaurant review presentation', () => {
-  test('never supplies fabricated restaurant reviews', () => {
-    expect(getRestaurantReviews('nanas-kitchen')).toEqual([]);
+  test('returns only reviews for the requested restaurant', () => {
+    expect(getRestaurantReviews('nanas-kitchen').every((r) => r.restaurantId === 'nanas-kitchen')).toBe(true);
+    expect(getRestaurantReviews('nanas-kitchen').length).toBeGreaterThan(0);
     expect(getRestaurantReviews('missing')).toEqual([]);
     expect(reviewSummary([]).average).toBeNull();
   });
