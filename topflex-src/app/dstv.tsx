@@ -78,9 +78,13 @@ export default function DstvScreen() {
               <View style={{ flex: 1 }}><Text style={styles.manageTitle}>Manage My Account</Text><Text style={styles.manageText}>Verify your smartcard to renew or change your package.</Text></View>
               <Ionicons name="chevron-forward" size={20} color={B.white} />
             </Pressable>
-            <View style={styles.quick}>
-              {([['refresh-outline', 'Renew Subscription', () => setStep('verify')], ['albums-outline', 'View Packages', () => setStep('packages')], ['help-buoy-outline', 'Get Help', () => router.push('/services/support')]] as const).map(([icon, label, fn]) => (
-                <Pressable key={label} onPress={fn} style={styles.quickItem}><View style={styles.quickIcon}><Ionicons name={icon} size={22} color={B.blue} /></View><Text style={styles.quickText}>{label}</Text></Pressable>
+            <View style={styles.quickList}>
+              {([['refresh-outline', 'Renew Subscription', 'Verify your smartcard to renew.', () => setStep('verify')], ['albums-outline', 'View Packages', 'Compare channels and monthly prices.', () => setStep('packages')], ['help-buoy-outline', 'Get Help', 'Talk to the TopFlex support team.', () => router.push('/services/support')]] as const).map(([icon, label, sub, fn]) => (
+                <Pressable key={label} accessibilityRole="button" onPress={fn} style={({ pressed }) => [styles.quickRow, pressed && styles.quickRowPressed]}>
+                  <View style={styles.quickIcon}><Ionicons name={icon} size={22} color={B.blue} /></View>
+                  <View style={{ flex: 1 }}><Text style={styles.quickTitle}>{label}</Text><Text style={styles.quickSub}>{sub}</Text></View>
+                  <Ionicons name="chevron-forward" size={19} color={B.muted} />
+                </Pressable>
               ))}
             </View>
           </>
@@ -193,10 +197,12 @@ const styles = StyleSheet.create({
   manage: { backgroundColor: B.blue, borderRadius: 18, padding: 18, flexDirection: 'row', alignItems: 'center', gap: 14, shadowColor: B.blue, shadowOpacity: 0.25, shadowRadius: 12, shadowOffset: { width: 0, height: 6 } },
   manageTitle: { color: B.white, fontFamily: 'Inter_700Bold', fontSize: 16 },
   manageText: { color: '#d6e4ff', fontFamily: 'Inter_400Regular', fontSize: 12, marginTop: 3 },
-  quick: { flexDirection: 'row', gap: 10 },
-  quickItem: { flex: 1, backgroundColor: B.white, borderRadius: 16, paddingVertical: 14, alignItems: 'center', gap: 8, borderWidth: 1, borderColor: B.border },
+  quickList: { gap: 10 },
+  quickRow: { flexDirection: 'row', alignItems: 'center', gap: 14, backgroundColor: B.white, borderRadius: 18, padding: 16, borderWidth: 1, borderColor: B.border },
+  quickRowPressed: { backgroundColor: B.light },
   quickIcon: { width: 44, height: 44, borderRadius: 14, backgroundColor: B.light, alignItems: 'center', justifyContent: 'center' },
-  quickText: { fontFamily: 'Inter_600SemiBold', fontSize: 11, color: B.text, textAlign: 'center' },
+  quickTitle: { fontFamily: 'Inter_600SemiBold', fontSize: 14, color: B.text },
+  quickSub: { fontFamily: 'Inter_400Regular', fontSize: 12, color: B.muted, marginTop: 3 },
   card: { backgroundColor: B.white, borderRadius: 18, padding: 18, borderWidth: 1, borderColor: B.border, gap: 10 },
   cardTitle: { fontFamily: 'Inter_700Bold', fontSize: 16, color: B.text },
   benefit: { flexDirection: 'row', gap: 10, alignItems: 'center' },
