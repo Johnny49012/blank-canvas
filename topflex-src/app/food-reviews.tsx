@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import Head from 'expo-router/head';
 import { Btn, FoodHeader, c, s } from '@/components/food/FoodUI';
 import { ReviewCard, ReviewsEmpty, ReviewStars } from '@/components/food/RestaurantReviews';
 import { getRestaurant } from '@/lib/food-store';
-import { filterReviews, getRestaurantReviews, reviewSummary, type ReviewSort } from '@/lib/restaurant-reviews';
+import { filterReviews, getFoodItemReviews, getRestaurantReviews, reviewSummary, type ReviewSort } from '@/lib/restaurant-reviews';
 
 const SORTS: { key: ReviewSort; label: string }[] = [{ key: 'recent', label: 'Most Recent' }, { key: 'high', label: 'Highest Rated' }, { key: 'low', label: 'Lowest Rated' }];
 
 export default function ReviewsScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
+  const { id, item } = useLocalSearchParams<{ id: string; item?: string }>();
   const restaurant = getRestaurant(id);
   const [query, setQuery] = useState('');
   const [rating, setRating] = useState<number | null>(null);
   const [sort, setSort] = useState<ReviewSort>('recent');
   const [sortOpen, setSortOpen] = useState(false);
   const [limit, setLimit] = useState(10);
-  const reviews = getRestaurantReviews(restaurant?.id ?? '');
+  const itemFilter = restaurant && item ? item : null;
+  const reviews = itemFilter && restaurant ? getFoodItemReviews(restaurant.id, itemFilter) : getRestaurantReviews(restaurant?.id ?? '');
   const summary = reviewSummary(reviews);
   const shown = filterReviews(reviews, query, rating, sort);
   const clear = () => { setQuery(''); setRating(null); setLimit(10); };
   return <ScrollView style={s.screen} keyboardShouldPersistTaps="handled">
-    <Head><title>{restaurant ? `${restaurant.name} Ratings & Reviews — TopFlex` : 'Restaurant Reviews — TopFlex'}</title><meta name="description" content={`Customer ratings and reviews for ${restaurant?.name ?? 'restaurants'} on TopFlex.`} /><meta property="og:title" content={`${restaurant?.name ?? 'Restaurant'} Ratings & Reviews — TopFlex`} /><meta property="og:description" content="Read customer feedback and restaurant ratings on TopFlex." /><meta property="og:type" content="website" /><meta name="twitter:card" content="summary" /></Head>
-    <FoodHeader title="Ratings & Reviews" subtitle="Read what customers say about this restaurant." />
+    <Head><title>{restaurant ? (itemFilter ? `${itemFilter} Reviews — ${restaurant.name} — TopFlex` : `${restaurant.name} Ratings & Reviews — TopFlex`) : 'Restaurant Reviews — TopFlex'}</title><meta name="description" content={`Customer ratings and reviews for ${itemFilter ? `${itemFilter} at ${restaurant?.name ?? 'restaurants'}` : restaurant?.name ?? 'restaurants'} on TopFlex.`} /><meta property="og:title" content={itemFilter ? `${itemFilter} Reviews — ${restaurant?.name ?? ''} — TopFlex` : `${restaurant?.name ?? 'Restaurant'} Ratings & Reviews — TopFlex`} /><meta property="og:description" content="Read customer feedback and restaurant ratings on TopFlex." /><meta property="og:type" content="website" /><meta name="twitter:card" content="summary" /></Head>
+    <FoodHeader title="Ratings & Reviews" subtitle={itemFilter ? `What customers say about ${itemFilter}.` : 'Read what customers say about this restaurant.'} />
     {!restaurant ? <View style={s.empty}><Text style={s.emptyTitle}>Restaurant not found</Text></View> : <View style={s.body}>
       <View style={rs.identity}><View style={rs.logo}><Ionicons name="restaurant-outline" size={22} color={c.foreground} /><Text style={rs.logoName} numberOfLines={2}>{restaurant.name}</Text></View><View style={rs.name}><Text style={s.section}>{restaurant.name}</Text><Text style={s.rowDesc}>{restaurant.cuisine}</Text></View></View>
+      {itemFilter && <View style={rs.itemChip}><Text style={rs.itemChipText} numberOfLines={1}>Item: {itemFilter}</Text><Pressable accessibilityRole="button" accessibilityLabel="Show all restaurant reviews" hitSlop={8} onPress={() => router.replace({ pathname: '/food-reviews', params: { id } })}><Ionicons name="close-circle" size={18} color={c.primary} /></Pressable></View>}
       <View style={s.card}>
         <View style={rs.summary}><View style={rs.score}><Text style={rs.average}>{summary.average?.toFixed(1) ?? '—'}</Text><ReviewStars rating={summary.average ?? 0} /><Text style={s.emptyText}>{summary.total} {summary.total === 1 ? 'review' : 'reviews'}</Text></View>
           <View style={rs.distribution}>{summary.counts.map((row) => <Pressable key={row.rating} accessibilityRole="button" accessibilityLabel={`Filter ${row.rating} star reviews, ${row.count} reviews`} accessibilityState={{ selected: rating === row.rating }} onPress={() => { setRating(rating === row.rating ? null : row.rating); setLimit(10); }} style={[rs.ratingRow, rating === row.rating && rs.selected]}>
@@ -67,4 +70,6 @@ const rs = StyleSheet.create({
   searchText: { flex: 1, minWidth: 0, color: c.foreground, fontFamily: 'Inter_400Regular', fontSize: 13, paddingVertical: 12 },
   sortHead: { flexDirection: 'row', gap: 8, alignItems: 'center' },
   sortOption: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 10 },
+  itemChip: { flexDirection: 'row', alignItems: 'center', gap: 8, alignSelf: 'flex-start', backgroundColor: c.secondary, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 6, maxWidth: '100%' },
+  itemChipText: { color: c.primary, fontFamily: 'Inter_600SemiBold', fontSize: 12, flexShrink: 1 },
 });

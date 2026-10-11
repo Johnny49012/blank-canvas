@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { filterReviews, getRestaurantReviews, reviewSummary, type RestaurantReview } from './restaurant-reviews';
+import { filterReviews, getFoodItemReviews, getRestaurantReviews, reviewSummary, type RestaurantReview } from './restaurant-reviews';
 
 const records: RestaurantReview[] = [
   { id: 'a', restaurantId: 'one', displayName: 'Customer A', rating: 5, text: 'Fresh food', foodItem: 'Rice', createdAt: '2026-10-01T12:00:00Z' },
@@ -28,5 +28,10 @@ describe('restaurant review presentation', () => {
     expect(filterReviews(records, '', null, 'recent').map((row) => row.id)).toEqual(['c', 'b', 'a']);
     expect(filterReviews(records, '', null, 'high').map((row) => row.id)).toEqual(['a', 'b', 'c']);
     expect(filterReviews(records, '', null, 'low').map((row) => row.id)).toEqual(['c', 'b', 'a']);
+  });
+  test('returns only reviews for the requested restaurant and food item', () => {
+    expect(getFoodItemReviews('burger-hub', 'Beef Burger').every((r) => r.restaurantId === 'burger-hub' && r.foodItem === 'Beef Burger')).toBe(true);
+    expect(getFoodItemReviews('nanas-kitchen', 'fried rice').length).toBe(1);
+    expect(getFoodItemReviews('nanas-kitchen', 'Waakye')).toEqual([]);
   });
 });
