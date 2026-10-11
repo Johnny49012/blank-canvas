@@ -1,5 +1,5 @@
 # Restaurant reviews
-- [ ] Restore the saved `/index` preview URL and verify that TopFlex opens.
+- [x] Restore the saved `/index` preview URL and verify that TopFlex opens.
 - [x] Add restaurant-specific review data selectors without fabricated feedback.
 - [x] Add a two-row synchronized review preview to restaurant details using the existing Pager.
 - [x] Add the restaurant-specific all-reviews page with rating summary, search, filtering and sorting.
