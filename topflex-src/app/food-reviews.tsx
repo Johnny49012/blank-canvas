@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
 import { Btn, FoodHeader, c, s } from '@/components/food/FoodUI';
 import { ReviewCard, ReviewsEmpty, ReviewStars } from '@/components/food/RestaurantReviews';
-import { FOOD_IMAGES, getRestaurant } from '@/lib/food-store';
+import { getRestaurant } from '@/lib/food-store';
 import { filterReviews, getRestaurantReviews, reviewSummary, type ReviewSort } from '@/lib/restaurant-reviews';
 
 const SORTS: { key: ReviewSort; label: string }[] = [{ key: 'recent', label: 'Most Recent' }, { key: 'high', label: 'Highest Rated' }, { key: 'low', label: 'Lowest Rated' }];
@@ -26,7 +26,7 @@ export default function ReviewsScreen() {
     <Head><title>{restaurant ? `${restaurant.name} Ratings & Reviews — TopFlex` : 'Restaurant Reviews — TopFlex'}</title><meta name="description" content={`Customer ratings and reviews for ${restaurant?.name ?? 'restaurants'} on TopFlex.`} /><meta property="og:title" content={`${restaurant?.name ?? 'Restaurant'} Ratings & Reviews — TopFlex`} /><meta property="og:description" content="Read customer feedback and restaurant ratings on TopFlex." /><meta property="og:type" content="website" /><meta name="twitter:card" content="summary" /></Head>
     <FoodHeader title="Ratings & Reviews" subtitle="Read what customers say about this restaurant." />
     {!restaurant ? <View style={s.empty}><Text style={s.emptyTitle}>Restaurant not found</Text></View> : <View style={s.body}>
-      <View style={rs.identity}><Image source={FOOD_IMAGES[restaurant.image]} style={rs.image} accessibilityLabel={`${restaurant.name} menu photo`} /><View style={rs.name}><Text style={s.section}>{restaurant.name}</Text><Text style={s.rowDesc}>{restaurant.cuisine}</Text></View></View>
+      <View style={rs.identity}><View style={rs.logo}><Ionicons name="restaurant-outline" size={22} color={c.foreground} /><Text style={rs.logoName} numberOfLines={2}>{restaurant.name}</Text></View><View style={rs.name}><Text style={s.section}>{restaurant.name}</Text><Text style={s.rowDesc}>{restaurant.cuisine}</Text></View></View>
       <View style={s.card}>
         <View style={rs.summary}><View style={rs.score}><Text style={rs.average}>{summary.average?.toFixed(1) ?? '—'}</Text><ReviewStars rating={summary.average ?? 0} /><Text style={s.emptyText}>{summary.total} {summary.total === 1 ? 'review' : 'reviews'}</Text></View>
           <View style={rs.distribution}>{summary.counts.map((row) => <Pressable key={row.rating} accessibilityRole="button" accessibilityLabel={`Filter ${row.rating} star reviews, ${row.count} reviews`} accessibilityState={{ selected: rating === row.rating }} onPress={() => { setRating(rating === row.rating ? null : row.rating); setLimit(10); }} style={[rs.ratingRow, rating === row.rating && rs.selected]}>
@@ -48,7 +48,8 @@ export default function ReviewsScreen() {
 
 const rs = StyleSheet.create({
   identity: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  image: { width: 64, height: 64, borderRadius: 12, flexShrink: 0 },
+  logo: { width: 64, height: 64, borderRadius: 32, backgroundColor: c.white, borderWidth: 1, borderColor: c.border, alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: 6, gap: 2 },
+  logoName: { fontFamily: 'Inter_700Bold', fontSize: 9, textAlign: 'center', color: c.foreground },
   name: { flex: 1, minWidth: 0 },
   summary: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   score: { alignItems: 'center', gap: 7, width: 88, flexShrink: 0 },
