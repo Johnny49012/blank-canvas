@@ -5,6 +5,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Btn, FoodHeader, ItemRow, c, notify, s } from '@/components/food/FoodUI';
 import { MENU, addToCart, formatGHS, getRestaurant, type FoodCategory, type MenuItem } from '@/lib/food-store';
 import restaurantInterior from '@/src/assets/food/restaurant-interior.jpg';
+import { RestaurantReviewsPreview } from '@/components/food/RestaurantReviews';
+import { getRestaurantReviews, reviewSummary } from '@/lib/restaurant-reviews';
 
 export default function RestaurantScreen() {
   const router = useRouter();
@@ -12,6 +14,7 @@ export default function RestaurantScreen() {
   const r = getRestaurant(id);
   const [menuOpen, setMenuOpen] = useState(false);
   const [cat, setCat] = useState<FoodCategory | 'All'>('All');
+  const ratings = reviewSummary(getRestaurantReviews(r?.id ?? ''));
   if (!r) return <View style={s.screen}><FoodHeader title="Restaurant" /><View style={s.empty}><Text style={s.emptyTitle}>Restaurant not found</Text></View></View>;
   const menu = MENU.filter((m) => m.restaurantId === r.id);
   const cats = ['All', ...Array.from(new Set(menu.flatMap((m) => m.categories)))] as (FoodCategory | 'All')[];
@@ -42,7 +45,7 @@ export default function RestaurantScreen() {
         <View style={rs.identity}>
           <View style={rs.logo}><Ionicons name="restaurant-outline" size={30} color={c.foreground} /><Text style={rs.logoName} numberOfLines={2}>{r.name}</Text></View>
           <Text style={rs.name}>{r.name}</Text>
-          <View style={rs.rating}><Ionicons name="star" size={16} color={c.primary} /><Text style={rs.ratingText}>{r.rating ?? '—'} <Text style={rs.reviewText}>({r.reviews ?? 0} reviews)</Text></Text></View>
+          <Pressable accessibilityRole="link" accessibilityLabel="View restaurant ratings and reviews" onPress={() => router.push({ pathname: '/food-reviews', params: { id: r.id } })} style={rs.rating}><Ionicons name="star" size={16} color={c.primary} /><Text style={rs.ratingText}>{ratings.average?.toFixed(1) ?? '—'} <Text style={rs.reviewText}>({ratings.total} reviews)</Text></Text></Pressable>
           <View style={rs.badges}>
             <View style={rs.badge}><Ionicons name="bicycle-outline" size={14} color={c.primary} /><Text style={rs.badgeText}>Delivery</Text></View>
             <View style={rs.badge}><Ionicons name="time-outline" size={14} color={r.isOpen ? c.primary : c.destructive} /><Text style={[rs.badgeText, !r.isOpen && { color: c.destructive }]}>{r.isOpen ? 'Open Now' : 'Closed'}</Text></View>
@@ -61,6 +64,7 @@ export default function RestaurantScreen() {
             <View style={rs.locationInfo}><Text style={s.section}>Location</Text><Fact icon="location-outline" text={r.area} /></View>
             <Pressable accessibilityLabel="Confirm delivery location" onPress={() => router.push('/food-location')} style={rs.locationButton}><Ionicons name="location" size={28} color={c.primary} /><Ionicons name="chevron-forward" size={14} color={c.primary} /></Pressable>
           </View>
+          <RestaurantReviewsPreview restaurantId={r.id} />
           <Text style={s.emptyText}>Test mode · sample restaurant and interior photo</Text>
         </View>
       </ScrollView>

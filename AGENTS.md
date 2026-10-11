@@ -12,3 +12,5 @@
 - TopFlex web preview deploy: after `npx expo export --platform web`, copy the export to `public/topflex` and then patch it — rename `assets/node_modules` to `assets/nm` (and `@expo-google-fonts` to `assets/nm/expo-google-fonts`) with matching rewrites in the exported entry JS, and insert a `history.replaceState` script into `index.html` mapping `/index.html` to `/topflex/`. Without these the Vite dev server refuses the node_modules-shaped public paths and expo-router loses the base path.
 
 - TopFlex editable source lives in `topflex-src/` (never /tmp, which the sandbox wipes); build there and copy the export into `public/topflex` with the documented patches.
+- Restaurant review presentation uses shared public-only review selectors and the existing two-item Pager so preview rows move together; catalogue sample rating totals are not customer review records.
+- Review submission remains unavailable until authenticated server-confirmed completed orders and a real review service exist; local wallet simulations must not establish review eligibility.
