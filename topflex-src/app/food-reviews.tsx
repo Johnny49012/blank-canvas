@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import Head from 'expo-router/head';
 import { Btn, FoodHeader, c, s } from '@/components/food/FoodUI';
 import { ReviewCard, ReviewsEmpty, ReviewStars } from '@/components/food/RestaurantReviews';
-import { FOOD_IMAGES, getRestaurant } from '@/lib/food-store';
+import { getRestaurant } from '@/lib/food-store';
 import { filterReviews, getRestaurantReviews, reviewSummary, type ReviewSort } from '@/lib/restaurant-reviews';
 
 const SORTS: { key: ReviewSort; label: string }[] = [{ key: 'recent', label: 'Most Recent' }, { key: 'high', label: 'Highest Rated' }, { key: 'low', label: 'Lowest Rated' }];
@@ -48,7 +48,8 @@ export default function ReviewsScreen() {
 
 const rs = StyleSheet.create({
   identity: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  image: { width: 64, height: 64, borderRadius: 12, flexShrink: 0 },
+  logo: { width: 64, height: 64, borderRadius: 32, backgroundColor: c.white, borderWidth: 1, borderColor: c.border, alignItems: 'center', justifyContent: 'center', flexShrink: 0, padding: 6, gap: 2 },
+  logoName: { fontFamily: 'Inter_700Bold', fontSize: 9, textAlign: 'center', color: c.foreground },
   name: { flex: 1, minWidth: 0 },
   summary: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   score: { alignItems: 'center', gap: 7, width: 88, flexShrink: 0 },
