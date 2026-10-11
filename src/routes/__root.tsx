@@ -79,9 +79,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Empty Project" },
-      { name: "description", content: "A clean, empty starting point." },
+      { name: "description", content: "An empty project, ready to build." },
+      { name: "author", content: "Lovable" },
+      { property: "og:title", content: "Empty Project" },
+      { property: "og:description", content: "An empty project, ready to build." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {

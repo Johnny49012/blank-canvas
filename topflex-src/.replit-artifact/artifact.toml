@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "TopFlex Web App"
+description = "A browser-ready conversion of the full TopFlex app, including its home, wallet, transaction, service, and rebuilt Buy Data screens."
+version = "1.0.0"
+id = "artifacts/topflex-data-web"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23435
+
+[services.development]
+run = "pnpm --filter @workspace/topflex-data-web run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/topflex-data-web", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/topflex-data-web/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23435"
+BASE_PATH = "/"

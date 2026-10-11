@@ -1,12 +1,12 @@
-# Blank Canvas
+# Blank Slate Project
 
-Create an empty project please
+Hey i need you to create an empty project please
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/a7e4f161-bd21-465b-bd2b-5ce884d456bb).
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/eb71ef2b-e9ed-4534-9592-e68461290134).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
