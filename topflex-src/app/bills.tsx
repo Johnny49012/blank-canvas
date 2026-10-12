@@ -107,7 +107,7 @@ export default function BillsScreen() {
             : (
               <>
                 {active.providers.map((p) => (
-                  <Pressable key={p.name} accessibilityRole="button" onPress={() => p.name === 'DSTV' ? router.push('/dstv') : Alert.alert(p.name, 'Bill payment for this provider is not connected yet. No payment will be made.')} style={({ pressed, hovered }: any) => [styles.card, (pressed || hovered) && styles.cardPressed]}>
+                  <Pressable key={p.name} accessibilityRole="button" onPress={() => p.name === 'DSTV' ? router.push('/dstv') : p.name === 'GOtv' ? router.push('/gotv') : Alert.alert(p.name, 'Bill payment for this provider is not connected yet. No payment will be made.')} style={({ pressed, hovered }: any) => [styles.card, (pressed || hovered) && styles.cardPressed]}>
                     <View style={[styles.iconCircle, styles.providerCircle, { backgroundColor: p.color }]}>
                       <Text style={styles.providerInitial}>{p.name.slice(0, 1)}</Text>
                     </View>

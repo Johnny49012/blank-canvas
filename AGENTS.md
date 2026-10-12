@@ -16,3 +16,4 @@
 - DStv help is a dedicated screen state with a separate help component and shared palette; both help entry points use it so customers stay within the DStv experience. Support actions must report unavailable until a real support service exists.
 - Restaurant review presentation uses shared public-only review selectors and the existing two-item Pager so preview rows move together; catalogue sample rating totals are not customer review records.
 - Review submission remains unavailable until authenticated server-confirmed completed orders and a real review service exist; local wallet simulations must not establish review eligibility.
+- Subdirectories have their own AGENTS.md to read before changing files there.
