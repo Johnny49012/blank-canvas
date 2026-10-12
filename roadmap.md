@@ -16,7 +16,7 @@
 - [ ] Enable smartcard verification and renewal payment — blocked: no authorized DStv/MultiChoice service or payment partner is connected.
 
 # GOtv page
-- [ ] Add the branded GOtv home, separate account management, renewal, package comparison and TopFlex help screens.
-- [ ] Connect GOtv from Pay Bills and verify navigation, input validation, package selection and support notices.
+- [x] Add the branded GOtv home, separate account management, renewal, package comparison and TopFlex help screens.
+- [x] Connect GOtv from Pay Bills and verify navigation, input validation, package selection and support notices; browser checks passed without runtime errors.
 - [ ] Enable account verification, payments and decoder commands — blocked: no authorized GOtv service or payment partner is connected.
 - [ ] Add playable tutorials and deliver TopFlex support — blocked: no videos or support service supplied.
