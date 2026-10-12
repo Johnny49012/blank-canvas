@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
 const HERO = require('../src/assets/dstv-hero.png');
 import { formatGhs, loadHomeData } from '@/lib/topflex';
+import { DstvHelp, dstvColors as B } from '@/components/DstvHelp';
 
 // Ghana decoder package prices published on dstv.com/en-gh (checked Oct 2026).
 // Replace with the provider API price list once a DStv/MultiChoice integration is connected.
@@ -19,8 +20,7 @@ const PACKAGES = [
   { id: 'compact-plus', name: 'DStv Compact Plus', price: 563, desc: 'Champions League football, UFC & NBA, documentaries, international series and movies.', tags: ['sports', 'movies', 'entertainment'] },
   { id: 'premium', name: 'DStv Premium', price: 854, desc: 'Latest blockbuster movies, award-winning series and the complete SuperSport offering.', tags: ['sports', 'movies', 'entertainment'] },
 ];
-const B = { blue: '#0047ba', deep: '#001e5a', navy: '#00133d', light: '#e8f0ff', bg: '#f4f7fc', text: '#0b1f44', muted: '#5f6f8c', border: '#dbe4f3', white: '#ffffff', red: '#c62828', redBg: '#fdecec' };
-type Step = 'home' | 'manage' | 'verify' | 'packages' | 'confirm' | 'result';
+type Step = 'home' | 'manage' | 'verify' | 'packages' | 'confirm' | 'result' | 'help';
 
 function Logo({ size = 26 }: { size?: number }) {
   return <Text style={{ color: B.white, fontFamily: 'Inter_700Bold', fontSize: size, fontStyle: 'italic', letterSpacing: -1 }}>DStv</Text>;
@@ -65,7 +65,7 @@ export default function DstvScreen() {
     <LinearGradient colors={[B.navy, B.blue]} style={styles.header}>
       <Pressable accessibilityLabel="Go back" onPress={back} hitSlop={12}><Ionicons name="arrow-back" size={22} color={B.white} /></Pressable>
       <Logo />
-      <Pressable accessibilityLabel="Get help" onPress={() => router.push('/services/support')} hitSlop={12}><Ionicons name="headset-outline" size={22} color={B.white} /></Pressable>
+      <Pressable accessibilityLabel="Get help" onPress={() => setStep('help')} hitSlop={12}><Ionicons name="headset-outline" size={22} color={B.white} /></Pressable>
     </LinearGradient>
   );
 
@@ -90,7 +90,7 @@ export default function DstvScreen() {
               <Ionicons name="chevron-forward" size={20} color={B.white} />
             </Pressable>
             <View style={styles.quickList}>
-              {([['refresh-outline', 'Renew Subscription', 'Verify your smartcard to renew.', () => setStep('verify')], ['albums-outline', 'View Packages', 'Compare channels and monthly prices.', () => setStep('packages')], ['help-buoy-outline', 'Get Help', 'Talk to the TopFlex support team.', () => router.push('/services/support')]] as const).map(([icon, label, sub, fn]) => (
+              {([['refresh-outline', 'Renew Subscription', 'Verify your smartcard to renew.', () => setStep('verify')], ['albums-outline', 'View Packages', 'Compare channels and monthly prices.', () => setStep('packages')], ['help-buoy-outline', 'Get Help', 'DStv guides, FAQs and TopFlex support.', () => setStep('help')]] as const).map(([icon, label, sub, fn]) => (
                 <Pressable key={label} accessibilityRole="button" onPress={fn} style={({ pressed }) => [styles.quickRow, pressed && styles.quickRowPressed]}>
                   <View style={styles.quickIcon}><Ionicons name={icon} size={22} color={B.white} /></View>
                   <View style={{ flex: 1 }}><Text style={styles.quickTitle}>{label}</Text><Text style={styles.quickSub}>{sub}</Text></View>
@@ -100,6 +100,8 @@ export default function DstvScreen() {
             </View>
           </>
         )}
+
+        {step === 'help' && <DstvHelp />}
 
         {step === 'manage' && (
           <>

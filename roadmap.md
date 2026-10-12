@@ -11,4 +11,6 @@
 - [x] Remove the "Why DStv?" benefits card.
 - [x] Show the three quick options as full-width list rows instead of grid cards.
 - [x] Give every quick row the same blue styling as "Manage My Account"; verified in the preview.
+- [ ] Add and verify dedicated DStv guides, FAQs and TopFlex-only support options.
+- [ ] Add playable tutorial videos and live chat/ticket/callback delivery — blocked: no tutorial videos or TopFlex support service supplied.
 - [ ] Enable smartcard verification and renewal payment — blocked: no authorized DStv/MultiChoice service or payment partner is connected.
