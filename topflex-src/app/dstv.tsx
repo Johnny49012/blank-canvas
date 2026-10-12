@@ -78,7 +78,7 @@ export default function DstvScreen() {
         {step === 'home' && (
           <>
             <ImageBackground source={HERO} resizeMode="cover" imageStyle={styles.heroImg} style={styles.hero}>
-              <LinearGradient colors={['rgba(0,19,61,0.92)', 'rgba(0,71,186,0.55)', 'rgba(0,30,90,0.15)']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={['rgba(0,19,61,0.9)', 'rgba(0,30,90,0.35)', 'rgba(0,0,0,0)']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
               <Logo size={40} />
               <Text style={styles.heroTitle}>DStv Subscriptions</Text>
               <Text style={styles.heroText}>Manage your account and enjoy uninterrupted entertainment.</Text>
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   header: { paddingTop: 56, paddingBottom: 16, paddingHorizontal: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   content: { padding: 16, paddingBottom: 140, gap: 14, maxWidth: 640, width: '100%', alignSelf: 'center' },
   hero: { borderRadius: 22, padding: 22, minHeight: 210, backgroundColor: B.deep, justifyContent: 'flex-end', overflow: 'hidden' },
-  heroImg: { borderRadius: 22, left: '30%' },
+  heroImg: { borderRadius: 22 },
   heroTitle: { color: B.white, fontFamily: 'Inter_700Bold', fontSize: 24, marginTop: 10 },
   heroText: { color: '#cfe0ff', fontFamily: 'Inter_400Regular', fontSize: 13, marginTop: 6, lineHeight: 19 },
   manage: { backgroundColor: B.blue, borderRadius: 18, padding: 18, flexDirection: 'row', alignItems: 'center', gap: 14, shadowColor: B.blue, shadowOpacity: 0.25, shadowRadius: 12, shadowOffset: { width: 0, height: 6 } },
