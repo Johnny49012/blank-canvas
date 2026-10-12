@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
     <title>TopFlex Web</title>
     <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
     <style id="expo-reset">
@@ -23,8 +23,14 @@
         flex: 1;
       }
     </style>
-  <link rel="icon" href="/topflex/favicon.ico"/><script>if(location.pathname.endsWith("/index.html"))history.replaceState(null,"","/topflex/");</script>
-</head>
+  <link rel="icon" href="/topflex/favicon.ico"/><link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icons/topflex-192.png">
+<meta name="theme-color" content="#063a32">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TopFlex">
+<script>if(location.pathname.endsWith("/index.html"))history.replaceState(null,"","/topflex/");</script></head>
 
   <body>
     <!-- Use static rendering with Expo Router to support running without JavaScript. -->
@@ -33,6 +39,6 @@
     </noscript>
     <!-- The root element for your Expo app. -->
     <div id="root"></div>
-  <script src="/topflex/_expo/static/js/web/entry-0aa149a1b75f1230dc3d8396302e1068.js" defer></script>
+  <script src="/topflex/_expo/static/js/web/entry-6086907615b8e16f081960dd69861f5c.js" defer></script>
 </body>
 </html>
