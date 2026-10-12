@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useQuery } from '@tanstack/react-query';
+const HERO = require('../src/assets/dstv-hero.png');
 import { formatGhs, loadHomeData } from '@/lib/topflex';
 
 // Ghana decoder package prices published on dstv.com/en-gh (checked Oct 2026).
@@ -19,7 +20,7 @@ const PACKAGES = [
   { id: 'premium', name: 'DStv Premium', price: 854, desc: 'Latest blockbuster movies, award-winning series and the complete SuperSport offering.', tags: ['sports', 'movies', 'entertainment'] },
 ];
 const B = { blue: '#0047ba', deep: '#001e5a', navy: '#00133d', light: '#e8f0ff', bg: '#f4f7fc', text: '#0b1f44', muted: '#5f6f8c', border: '#dbe4f3', white: '#ffffff', red: '#c62828', redBg: '#fdecec' };
-type Step = 'home' | 'verify' | 'packages' | 'confirm' | 'result';
+type Step = 'home' | 'manage' | 'verify' | 'packages' | 'confirm' | 'result';
 
 function Logo({ size = 26 }: { size?: number }) {
   return <Text style={{ color: B.white, fontFamily: 'Inter_700Bold', fontSize: size, fontStyle: 'italic', letterSpacing: -1 }}>DStv</Text>;
@@ -45,6 +46,15 @@ export default function DstvScreen() {
     // No authorized DStv verification service is connected, so no account can be confirmed.
     setTimeout(() => setVerify('unavailable'), 900);
   };
+  const [action, setAction] = useState<string | null>(null);
+  const [actionBusy, setActionBusy] = useState(false);
+  const runAction = (name: string) => {
+    const digits = card.replace(/\D/g, '');
+    if (digits.length < 10 || digits.length > 12) { setVerify('invalid'); return; }
+    setActionBusy(true); setAction(null);
+    // No authorized DStv service is connected, so no account request can actually be sent.
+    setTimeout(() => { setActionBusy(false); setAction(name); }, 900);
+  };
   const pay = () => {
     if (paying) return;
     setPaying(true);
@@ -68,14 +78,15 @@ export default function DstvScreen() {
         {step === 'home' && (
           <>
             <LinearGradient colors={[B.deep, B.blue]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.hero}>
-              <Ionicons name="football-outline" size={110} color="rgba(255,255,255,0.08)" style={styles.heroIcon} />
+              <Image source={HERO} resizeMode="contain" style={styles.heroImg} accessibilityLabel="DStv sports, movies and family shows" />
+              <LinearGradient colors={[B.deep, 'rgba(0,30,90,0.6)', 'rgba(0,30,90,0)']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={StyleSheet.absoluteFill} />
               <Logo size={40} />
               <Text style={styles.heroTitle}>DStv Subscriptions</Text>
               <Text style={styles.heroText}>Manage your account and enjoy uninterrupted entertainment.</Text>
             </LinearGradient>
-            <Pressable onPress={() => setStep('verify')} style={styles.manage}>
+            <Pressable onPress={() => { setAction(null); setStep('manage'); }} style={styles.manage}>
               <Ionicons name="tv-outline" size={26} color={B.white} />
-              <View style={{ flex: 1 }}><Text style={styles.manageTitle}>Manage My Account</Text><Text style={styles.manageText}>Verify your smartcard to renew or change your package.</Text></View>
+              <View style={{ flex: 1 }}><Text style={styles.manageTitle}>Manage My Account</Text><Text style={styles.manageText}>Check your account and fix decoder errors.</Text></View>
               <Ionicons name="chevron-forward" size={20} color={B.white} />
             </Pressable>
             <View style={styles.quickList}>
@@ -90,9 +101,35 @@ export default function DstvScreen() {
           </>
         )}
 
+        {step === 'manage' && (
+          <>
+            <Text style={styles.h1}>Manage My Account</Text>
+            <Text style={styles.sub}>Enter your smartcard number, then choose what you need.</Text>
+            <View style={styles.card}>
+              <Text style={styles.label} nativeID="msmart">Smartcard Number</Text>
+              <TextInput accessibilityLabelledBy="msmart" value={card} onChangeText={(t) => { setCard(t.replace(/[^\d ]/g, '')); setVerify('idle'); setAction(null); }} keyboardType="number-pad" maxLength={15} placeholder="e.g. 1234 5678 9012" placeholderTextColor={B.muted} style={[styles.input, verify === 'invalid' && { borderColor: B.red }]} />
+              {verify === 'invalid' && <Text style={styles.err}>Enter a valid 10–12 digit smartcard number.</Text>}
+            </View>
+            <View style={styles.quickList}>
+              {([['person-circle-outline', 'Account Status', 'See your package and due date.'], ['flash-outline', 'Clear Error E16', 'Channels scrambled after renewing.'], ['card-outline', 'Clear Error E32', 'Smartcard or decoder not activated.'], ['radio-outline', 'Refresh Signal', 'Reconnect your decoder to DStv.']] as const).map(([icon, label, sub]) => (
+                <Pressable key={label} accessibilityRole="button" disabled={actionBusy} onPress={() => runAction(label)} style={({ pressed }) => [styles.quickRow, pressed && styles.quickRowPressed]}>
+                  <View style={styles.quickIcon}><Ionicons name={icon} size={22} color={B.white} /></View>
+                  <View style={{ flex: 1 }}><Text style={styles.quickTitle}>{label}</Text><Text style={styles.quickSub}>{sub}</Text></View>
+                  <Ionicons name="chevron-forward" size={19} color={B.white} />
+                </Pressable>
+              ))}
+            </View>
+            {actionBusy && <ActivityIndicator color={B.blue} />}
+            {action && (
+              <View style={styles.alert}><Ionicons name="cloud-offline-outline" size={18} color={B.red} /><Text style={styles.alertText}>{action} isn't available yet — TopFlex isn't connected to a DStv account service. Nothing was sent to your decoder.</Text></View>
+            )}
+            <Pressable onPress={() => setStep('verify')}><Text style={styles.link}>Renew subscription instead</Text></Pressable>
+          </>
+        )}
+
         {step === 'verify' && (
           <>
-            <Text style={styles.h1}>Manage Your DStv Account</Text>
+            <Text style={styles.h1}>Renew Your Subscription</Text>
             <Text style={styles.sub}>Enter your smartcard number to get started.</Text>
             <View style={styles.card}>
               <Text style={styles.label} nativeID="smartcard">Smartcard Number</Text>
@@ -190,10 +227,10 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: B.bg },
   header: { paddingTop: 56, paddingBottom: 16, paddingHorizontal: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   content: { padding: 16, paddingBottom: 140, gap: 14, maxWidth: 640, width: '100%', alignSelf: 'center' },
-  hero: { borderRadius: 22, padding: 22, minHeight: 200, justifyContent: 'flex-end', overflow: 'hidden' },
-  heroIcon: { position: 'absolute', right: -10, top: -10 },
+  hero: { borderRadius: 22, padding: 22, minHeight: 210, backgroundColor: B.deep, justifyContent: 'flex-end', overflow: 'hidden' },
+  heroImg: { position: 'absolute', right: -20, bottom: 0, width: '78%', height: '100%' },
   heroTitle: { color: B.white, fontFamily: 'Inter_700Bold', fontSize: 24, marginTop: 10 },
-  heroText: { color: '#cfe0ff', fontFamily: 'Inter_400Regular', fontSize: 13, marginTop: 6, lineHeight: 19 },
+  heroText: { color: '#cfe0ff', fontFamily: 'Inter_400Regular', fontSize: 13, marginTop: 6, lineHeight: 19, maxWidth: '62%' },
   manage: { backgroundColor: B.blue, borderRadius: 18, padding: 18, flexDirection: 'row', alignItems: 'center', gap: 14, shadowColor: B.blue, shadowOpacity: 0.25, shadowRadius: 12, shadowOffset: { width: 0, height: 6 } },
   manageTitle: { color: B.white, fontFamily: 'Inter_700Bold', fontSize: 16 },
   manageText: { color: '#d6e4ff', fontFamily: 'Inter_400Regular', fontSize: 12, marginTop: 3 },
