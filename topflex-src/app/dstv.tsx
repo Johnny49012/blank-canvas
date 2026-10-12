@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -77,12 +77,13 @@ export default function DstvScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         {step === 'home' && (
           <>
-            <ImageBackground source={HERO} resizeMode="cover" imageStyle={styles.heroImg} style={styles.hero}>
-              <LinearGradient colors={['rgba(0,19,61,0.9)', 'rgba(0,30,90,0.35)', 'rgba(0,0,0,0)']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={[B.deep, B.blue]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.hero}>
+              <Image source={HERO} resizeMode="contain" style={styles.heroImg} accessibilityLabel="DStv sports, movies and family shows" />
+              <LinearGradient colors={[B.deep, 'rgba(0,30,90,0.6)', 'rgba(0,30,90,0)']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={StyleSheet.absoluteFill} />
               <Logo size={40} />
               <Text style={styles.heroTitle}>DStv Subscriptions</Text>
               <Text style={styles.heroText}>Manage your account and enjoy uninterrupted entertainment.</Text>
-            </ImageBackground>
+            </LinearGradient>
             <Pressable onPress={() => { setAction(null); setStep('manage'); }} style={styles.manage}>
               <Ionicons name="tv-outline" size={26} color={B.white} />
               <View style={{ flex: 1 }}><Text style={styles.manageTitle}>Manage My Account</Text><Text style={styles.manageText}>Check your account and fix decoder errors.</Text></View>
@@ -227,9 +228,9 @@ const styles = StyleSheet.create({
   header: { paddingTop: 56, paddingBottom: 16, paddingHorizontal: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   content: { padding: 16, paddingBottom: 140, gap: 14, maxWidth: 640, width: '100%', alignSelf: 'center' },
   hero: { borderRadius: 22, padding: 22, minHeight: 210, backgroundColor: B.deep, justifyContent: 'flex-end', overflow: 'hidden' },
-  heroImg: { borderRadius: 22 },
+  heroImg: { position: 'absolute', right: -20, bottom: 0, width: '78%', height: '100%' },
   heroTitle: { color: B.white, fontFamily: 'Inter_700Bold', fontSize: 24, marginTop: 10 },
-  heroText: { color: '#cfe0ff', fontFamily: 'Inter_400Regular', fontSize: 13, marginTop: 6, lineHeight: 19 },
+  heroText: { color: '#cfe0ff', fontFamily: 'Inter_400Regular', fontSize: 13, marginTop: 6, lineHeight: 19, maxWidth: '62%' },
   manage: { backgroundColor: B.blue, borderRadius: 18, padding: 18, flexDirection: 'row', alignItems: 'center', gap: 14, shadowColor: B.blue, shadowOpacity: 0.25, shadowRadius: 12, shadowOffset: { width: 0, height: 6 } },
   manageTitle: { color: B.white, fontFamily: 'Inter_700Bold', fontSize: 16 },
   manageText: { color: '#d6e4ff', fontFamily: 'Inter_400Regular', fontSize: 12, marginTop: 3 },
