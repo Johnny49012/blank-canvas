@@ -8,4 +8,4 @@
 - All Services uses a single scroll view with a sticky title/search section after the toolbar so navigation icons scroll away before the service list passes beneath the search.
 - Food location confirmation uses the existing local food store and returns the selected address to browsing and checkout; unavailable live-map features remain explicit rather than using a fabricated geographic map.
 - Restaurant details and menus share the existing restaurant route and catalogue so View Menu preserves cart ordering without duplicate restaurant screens.
-- GOtv uses a dedicated subscription screen and a separate branded help component; account verification gates renewal checkout and all unsupported account/payment/support actions remain explicit so browsing never simulates a successful service request.
+- DStv and GOtv are thin configs over the shared components/tv/TvServiceScreen (themes in constants/tv-themes.ts); each keeps its own branded help component, and unsupported account/payment/support actions stay explicit so browsing never simulates a successful service request.
