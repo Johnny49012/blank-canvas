@@ -20,3 +20,6 @@
 - [x] Connect GOtv from Pay Bills and verify navigation, input validation, package selection and support notices; browser checks passed without runtime errors.
 - [ ] Enable account verification, payments and decoder commands — blocked: no authorized GOtv service or payment partner is connected.
 - [ ] Add playable tutorials and deliver TopFlex support — blocked: no videos or support service supplied.
+# Electricity
+- [x] Electricity providers limited to ECG and NEDCo; dedicated ECG and NEDCo payment pages with prepaid/postpaid, validation and preview-only review.
+- [ ] Real electricity payments and token delivery — blocked: no ECG/NEDCo payment service connected.
