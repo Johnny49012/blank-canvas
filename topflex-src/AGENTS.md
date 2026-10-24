@@ -9,3 +9,4 @@
 - Food location confirmation uses the existing local food store and returns the selected address to browsing and checkout; unavailable live-map features remain explicit rather than using a fabricated geographic map.
 - Restaurant details and menus share the existing restaurant route and catalogue so View Menu preserves cart ordering without duplicate restaurant screens.
 - DStv and GOtv are thin configs over the shared components/tv/TvServiceScreen (themes in constants/tv-themes.ts); each keeps its own branded help component, and unsupported account/payment/support actions stay explicit so browsing never simulates a successful service request.
+- ECG and NEDCo are thin routes over components/ElectricityPayScreen with provider data and validation in lib/electricity.ts; the final pay action stays preview-only until a real payment service exists.
