@@ -21,8 +21,7 @@ const categories: Category[] = [
     icon: <Ionicons name="flash" size={26} color="#f07a1a" />,
     providers: [
       { name: 'ECG', detail: 'Electricity Company of Ghana', color: '#1f4fa3' },
-      { name: 'NEDCo', detail: 'Northern Electricity Distribution', color: '#2e8b57' },
-      { name: 'Prepaid Meter', detail: 'Direct Top-Up', color: '#334155' },
+      { name: 'NEDCo', detail: 'Northern Electricity Distribution Company', color: '#2e8b57' },
     ] },
   { key: 'water', title: 'Water', subtitle: 'Prepaid & Postpaid', heading: 'Water', prompt: 'Choose your water provider.', bg: '#e0ecfc',
     icon: <Ionicons name="water" size={26} color="#2f7fe8" />,
@@ -107,7 +106,7 @@ export default function BillsScreen() {
             : (
               <>
                 {active.providers.map((p) => (
-                  <Pressable key={p.name} accessibilityRole="button" onPress={() => p.name === 'DSTV' ? router.push('/dstv') : p.name === 'GOtv' ? router.push('/gotv') : Alert.alert(p.name, 'Bill payment for this provider is not connected yet. No payment will be made.')} style={({ pressed, hovered }: any) => [styles.card, (pressed || hovered) && styles.cardPressed]}>
+                  <Pressable key={p.name} accessibilityRole="button" onPress={() => p.name === 'ECG' ? router.push('/ecg') : p.name === 'NEDCo' ? router.push('/nedco') : p.name === 'DSTV' ? router.push('/dstv') : p.name === 'GOtv' ? router.push('/gotv') : Alert.alert(p.name, 'Bill payment for this provider is not connected yet. No payment will be made.')} style={({ pressed, hovered }: any) => [styles.card, (pressed || hovered) && styles.cardPressed]}>
                     <View style={[styles.iconCircle, styles.providerCircle, { backgroundColor: p.color }]}>
                       <Text style={styles.providerInitial}>{p.name.slice(0, 1)}</Text>
                     </View>
